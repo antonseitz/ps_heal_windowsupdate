@@ -100,12 +100,18 @@ $answer=read-host "Enter SCAN and press ENTER to do Sfc /scannow "
 
 if ($answer -eq "SCAN" ) {
 
+"sfc /scannow"
+sfc /scannow
 
-sfc /scannow
+"dism /online /cleanup-image /scanhealth"
 dism /online /cleanup-image /scanhealth
+"dism /Online /Cleanup-Image /CheckHealth"
 dism /Online /Cleanup-Image /CheckHealth
+"dism /online /cleanup-image /restorehealth"
 dism /online /cleanup-image /restorehealth
-sfc /scannow
+
+
+
 
 }
 
