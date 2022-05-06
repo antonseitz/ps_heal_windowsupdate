@@ -59,7 +59,7 @@ save_and_delete ($env:systemroot + "\winsxs\pending.xml")}
 
  
 # PROBABLY OLD PATH
-if(test-path $env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader){
+if(test-path "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader"){
 Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat"}
 Remove-Item $env:systemroot\Logs\WindowsUpdate\*
 
