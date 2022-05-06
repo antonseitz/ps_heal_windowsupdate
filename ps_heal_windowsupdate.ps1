@@ -92,23 +92,43 @@ pop-Location
 OK! 
 
 
-Do you want to retry updating now?
+Repair is done !
 
-OR 
 
-Do you want to start a SFC and CHKSDK after Reboot ? "
-$answer=read-host "So, if Windows Update still fails enter SCAN and press ENTER to do Scans; Just hit ENTER for retrying"
+Do you want to do a SFC and DISM scanns now ? "
+$answer=read-host "Enter SCAN and press ENTER to do Sfc /scannow "
 
 if ($answer -eq "SCAN" ) {
 
 
 sfc /scannow
+dism /online /cleanup-image /scanhealth
+dism /Online /Cleanup-Image /CheckHealth
+dism /online /cleanup-image /restorehealth
+sfc /scannow
+
+}
+
+
+"Do you want to do CHKSDK after next Reboot ?"
+$answer=read-host "Schedule chkdsk after next reboot ? Just hit ENTER to do so"
+if ($answer -eq "" ) {
 
 chkdsk.exe /f c:
 
+
+}
+"RESTART PC NOW ?"
+$answer=read-host "RESTART PC NOW ? Type RESTART and hit ENTER to Restart now"
+if ($answer -eq "RESTART" ) {
+
+
 restart-computer
 }
-else {
+
+$answer=read-host "Retry Windows Update? Hit ENTER to Retry Updating"
+if ($answer -eq "" ) {
+
 
 Write-Host "11) Starting Windows Update Services…"
 Start-Service -Name BITS
@@ -122,5 +142,4 @@ wuauclt /resetauthorization
 	
 	"Now try to update again!"
 }
-
 
