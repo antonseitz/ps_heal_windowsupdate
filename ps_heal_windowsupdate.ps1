@@ -65,7 +65,7 @@ Remove-Item $env:systemroot\Logs\WindowsUpdate\*
 
 # PROBABLY OLD PATH
 Write-Host "4. Removing old Windows Update log..."
-if test-path($env:systemroot\WindowsUpdate.log ){
+if (test-path $env:systemroot\WindowsUpdate.log ){
 Remove-Item $env:systemroot\WindowsUpdate.log }
  
 #Write-Host "5. Resetting the Windows Update Services to defualt settings..."
