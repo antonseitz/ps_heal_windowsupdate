@@ -22,7 +22,8 @@ Remove-Item -recurse $path_bak
 
 
 }
-"backup  " + $path 
+"backup  " + $path
+takeown /r /f $path
 Rename-Item  $path $path_bak
 
 
@@ -58,13 +59,14 @@ save_and_delete ($env:systemroot + "\winsxs\pending.xml")}
 
  
 # PROBABLY OLD PATH
-Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat"
-Remove-Item $env:ALLUSERSPROFILE\ALLUSERSPROFILE%\Microsoft\Network\Downloader\qmgr*.dat
+if(test-path $env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader){
+Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat"}
 Remove-Item $env:systemroot\Logs\WindowsUpdate\*
 
 # PROBABLY OLD PATH
 Write-Host "4. Removing old Windows Update log..."
-Remove-Item $env:systemroot\WindowsUpdate.log 
+if test-path($env:systemroot\WindowsUpdate.log ){
+Remove-Item $env:systemroot\WindowsUpdate.log }
  
 #Write-Host "5. Resetting the Windows Update Services to defualt settings..."
 #"sc.exe sdset bits D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPWPDTLOCRRC;;;PU)"
