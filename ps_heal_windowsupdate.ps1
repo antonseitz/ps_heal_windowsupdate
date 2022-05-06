@@ -22,7 +22,7 @@ Remove-Item -recurse $path_bak
 
 
 }
-
+"backup  " + $path 
 Rename-Item  $path $path_bak
 
 
@@ -38,45 +38,31 @@ Write-Host "3. Renaming the Software Distribution and CatRoot Folder..."
 
 if(test-path $env:systemroot\SoftwareDistribution) {
 	save_and_delete( $env:systemroot + "\SoftwareDistribution" )
-	#"Delete SoftwareDistribution.bak"
-	#takeown /f $env:systemroot\SoftwareDistribution.bak
-#Remove-Item $env:systemroot\SoftwareDistribution.bak}
+	
 }
-if(test-path $env:systemroot\SoftwareDistribution ){
-Rename-Item $env:systemroot\SoftwareDistribution SoftwareDistribution.bak
 
+if (test-path $env:systemroot\System32\catroot2 ){
+save_and_delete( $env:systemroot + "\System32\catroot2") 
 }
-if (test-path $env:systemroot\System32\catroot2.bak ){
-Remove-Item $env:systemroot\System32\catroot2.bak 
-}
-if(test-path $env:systemroot\System32\Catroot2){
-Rename-Item $env:systemroot\System32\Catroot2 catroot2.bak }
+
  
-if(test-path $env:systemroot\winsxs\pending.xml.bak){
-Remove-Item $env:systemroot\winsxs\pending.xml.bak}
+if(test-path $env:systemroot\winsxs\pending.xml){
+save_and_delete ($env:systemroot + "\winsxs\pending.xml")}
 
-#    takeown /f "%SYSTEMROOT%\winsxs\pending.xml" 
- #   attrib -r -s -h /s /d "%SYSTEMROOT%\winsxs\pending.xml" 
- 
 
-if(test-path $env:SYSTEMROOT\winsxs\pending.xml){
-rename-item $env:SYSTEMROOT\winsxs\pending.xml $env:SYSTEMROOT\pending.xml.bak 
-}
-if(test-path $env:systemroot\SoftwareDistribution.bak){
-Remove-Item $env:systemroot\SoftwareDistribution.bak
+
+
+
 #if exist "%SYSTEMROOT%\SoftwareDistribution" ( 
 #   attrib -r -s -h /s /d "%SYSTEMROOT%\SoftwareDistribution" 
-}
-if(test-path $env:SYSTEMROOT\SoftwareDistribution  ){
-rename-item $env:SYSTEMROOT\SoftwareDistribution  $env:SYSTEMROOT\SoftwareDistribution.bak 
-}
 
  
- 
+# PROBABLY OLD PATH
 Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat"
 Remove-Item $env:ALLUSERSPROFILE\ALLUSERSPROFILE%\Microsoft\Network\Downloader\qmgr*.dat
 Remove-Item $env:systemroot\Logs\WindowsUpdate\*
- 
+
+# PROBABLY OLD PATH
 Write-Host "4. Removing old Windows Update log..."
 Remove-Item $env:systemroot\WindowsUpdate.log 
  
