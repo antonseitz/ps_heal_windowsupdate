@@ -2,7 +2,7 @@
 $arch = Get-WMIObject -Class Win32_Processor -ComputerName LocalHost | Select-Object AddressWidth
  
 Write-Host "1. Stopping Windows Update Services..."
-
+$answer=read-host "Do so? Hit ENTER"
 Stop-Service -Name BITS
 Stop-Service -Name wuauserv
 Stop-Service -Name usosvc
@@ -31,22 +31,26 @@ Rename-Item  $path $path_bak
 
 
 Write-Host "2. Remove QMGR Data file…"
-
+$answer=read-host "Do so? Hit ENTER"
 Remove-Item "$env:allusersprofile\Application Data\Microsoft\Network\Downloader\qmgr*.dat" 
  
 
-Write-Host "3. Renaming the Software Distribution and CatRoot Folder..."
-
+Write-Host "3. Backup and delete the Software Distribution ..."
+$answer=read-host "Do so? Hit ENTER"
 if(test-path $env:systemroot\SoftwareDistribution) {
 	save_and_delete( $env:systemroot + "\SoftwareDistribution" )
 	
 }
+Write-Host "3. Backup and delete the CatRoot Folder..."
+
+$answer=read-host "Do so? Hit ENTER"
 
 if (test-path $env:systemroot\System32\catroot2 ){
 save_and_delete( $env:systemroot + "\System32\catroot2") 
 }
 
- 
+Write-Host "3. Backup and delete the pending.xml ..."
+ $answer=read-host "Do so? Hit ENTER"
 if(test-path $env:systemroot\winsxs\pending.xml){
 save_and_delete ($env:systemroot + "\winsxs\pending.xml")}
 
@@ -57,12 +61,14 @@ save_and_delete ($env:systemroot + "\winsxs\pending.xml")}
 #if exist "%SYSTEMROOT%\SoftwareDistribution" ( 
 #   attrib -r -s -h /s /d "%SYSTEMROOT%\SoftwareDistribution" 
 
- 
+ $answer=read-host "Continue with ENTER"
 # PROBABLY OLD PATH
 if(test-path "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader"){
 Remove-Item "$env:ALLUSERSPROFILE\Application Data\Microsoft\Network\Downloader\qmgr*.dat"}
 Remove-Item $env:systemroot\Logs\WindowsUpdate\*
 
+
+$answer=read-host "Continue with ENTER"
 # PROBABLY OLD PATH
 Write-Host "4. Removing old Windows Update log..."
 if (test-path $env:systemroot\WindowsUpdate.log ){
@@ -75,6 +81,7 @@ Remove-Item $env:systemroot\WindowsUpdate.log }
 push-Location $env:systemroot\system32
  
 Write-Host "6. Registering some DLLs..."
+ $answer=read-host "Do so? Hit ENTER"
 regsvr32.exe /s atl.dll
 regsvr32.exe /s urlmon.dll
 regsvr32.exe /s mshtml.dll
@@ -112,19 +119,14 @@ regsvr32.exe /s wucltux.dll
 regsvr32.exe /s muweb.dll
 regsvr32.exe /s wuwebv.dll
  
-#Write-Host "7) Removing WSUS client settings..."
-#REG DELETE "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" /v AccountDomainSid /f
-#REG DELETE "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" /v PingID /f
-#REG DELETE "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" /v SusClientId /f
- 
-#Write-Host "8) Resetting the WinSock…"
-#netsh winsock reset
-#netsh winhttp reset proxy
+
  
 Write-Host "9) Delete all BITS jobs…"
+ $answer=read-host "Do so? Hit ENTER"
 Get-BitsTransfer | Remove-BitsTransfer
  
 Write-Host "10) Attempting to install the Windows Update Agent..."
+ $answer=read-host "Do so? Hit ENTER"
 if($arch -eq 64){
     wusa Windows8-RT-KB2937636-x64 /quiet
 }
@@ -147,15 +149,15 @@ $answer=read-host "Enter SCAN and press ENTER to do Sfc /scannow "
 
 if ($answer -eq "SCAN" ) {
 
-"sfc /scannow"
-sfc /scannow
-
 "dism /online /cleanup-image /scanhealth"
 dism /online /cleanup-image /scanhealth
 "dism /Online /Cleanup-Image /CheckHealth"
 dism /Online /Cleanup-Image /CheckHealth
 "dism /online /cleanup-image /restorehealth"
 dism /online /cleanup-image /restorehealth
+
+"sfc /scannow"
+sfc /scannow
 
 
 
